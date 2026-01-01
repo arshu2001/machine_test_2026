@@ -5,9 +5,6 @@ class VideoResponse {
   VideoResponse({this.videos});
 
   factory VideoResponse.fromJson(Map<String, dynamic> json) {
-    // JSON: { "videos": { "videos": [ ... ] } }
-    // or { "videos": [ ... ] } ?
-    // User JSON: { "videos": { "title": "...", "videos": [ ... ] } }
     
     if (json['videos'] != null && json['videos'] is Map) {
       final inner = json['videos'];
@@ -25,7 +22,7 @@ class VideoItem {
   final int? id;
   final String? title;
   final String? description;
-  final String? url; // <-- this maps to video_url
+  final String? url;
   final bool? isCompleted;
   final bool? hasPlayButton;
   final bool? isLocked;
@@ -62,11 +59,10 @@ class StreakResponse {
   StreakResponse({this.currentStreak, this.days});
 
   factory StreakResponse.fromJson(Map<String, dynamic> json) {
-    // JSON: { "days": [ ... ] } - wait, check user json
-    // User JSON: { "current_day": 5, "days": [...] }
+    
     
     return StreakResponse(
-      currentStreak: int.tryParse(json['current_day']?.toString() ?? '0'), // using current_day as streak for now? or count contiguous
+      currentStreak: int.tryParse(json['current_day']?.toString() ?? '0'), 
       days: json['days'] != null 
           ? (json['days'] as List).map((i) => StreakDay.fromJson(i)).toList() 
           : [],

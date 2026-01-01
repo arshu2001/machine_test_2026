@@ -1,6 +1,6 @@
 class HomeData {
   final UserData? userdata;
-  final List<Category>? categories; // Mapped from 'popular_courses'
+  final List<Category>? categories; 
   final List<HeroBanner>? heroBanners;
   final ActiveCourse? activeCourse;
   final Community? community;
@@ -73,7 +73,7 @@ class HeroBanner {
 class Course {
   final int? id;
   final String? title;
-  final String? image; // changed from thumbnail to match 'image' key in new json
+  final String? image; 
 
   Course({this.id, this.title, this.image});
 
