@@ -14,52 +14,76 @@ Widget buildHeader(UserData? user) {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           CustomText(
-            text: user?.name ?? 'User',
-            fontSize: 24.spMin,
-            style: GoogleFonts.poppins(
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          CustomText(
             text: user?.greeting ?? '',
             fontSize: 14.spMin,
+            fontWeight: FontWeight.w600,
             style: GoogleFonts.poppins(
-              color: Colors.grey,
+              color: Colors.white,
             ),
           ),
         ],
       ),
 
-      /// 🔥 Streak Button
-      InkWell(
-        onTap: () => Get.toNamed(Routes.STREAK),
-        child: Container(
-          padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(12.r),
-            border: Border.all(color: Colors.grey.shade200),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(0.05),
-                blurRadius: 4.r,
-                offset: Offset(0, 2.h),
+      Row(
+        children: [
+          /// Streak Button
+          InkWell(
+            onTap: () => Get.toNamed(Routes.STREAK),
+            child: Container(
+              padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(20.r),
               ),
-            ],
+              child: Row(
+                children: [
+                   CustomText(
+                    text: "Day ${user?.streakDays ?? 7} ",
+                    fontWeight: FontWeight.bold,
+                    fontSize: 14.spMin,
+                    fontColor: Colors.black,
+                  ),
+                  CustomText(
+                    text: user?.streakIcon ?? "🔥",
+                    fontSize: 14.spMin,
+                  ),
+                ],
+              ),
+            ),
           ),
-          child: Row(
-            children: [
-              CustomText(
-                text: "Day ${user?.streakDays ?? 0} ",
-                fontWeight: FontWeight.bold,
-              ),
-              CustomText(
-                text: user?.streakIcon ?? "",
-              ),
-            ],
+          
+          SizedBox(width: 10.w),
+
+          /// Notification Button
+          Container(
+            width: 40.w,
+            height: 40.h,
+            decoration: const BoxDecoration(
+              color: Colors.white,
+              shape: BoxShape.circle,
+            ),
+            child: Stack(
+              alignment: Alignment.center,
+              children: [
+                Icon(Icons.notifications_none_outlined, size: 24.spMin, color: Colors.black),
+                Positioned(
+                  top: 10.h, 
+                  right: 12.w,
+                  child: Container(
+                    width: 8.r,
+                    height: 8.r,
+                    decoration: BoxDecoration(
+                      color: const Color(0xFFFF5630),
+                      shape: BoxShape.circle,
+                      border: Border.all(color: Colors.white, width: 1.5),
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
-        ),
-      ),
+        ],
+      )
     ],
   );
 }

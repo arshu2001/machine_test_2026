@@ -59,7 +59,7 @@ Widget buildStreakPath(List<StreakDay> days) {
 
             // Label for day
             CustomText(
-              text: day.label, // ✅ use label from new model
+              text: day.label, 
               fontSize: 16,
               fontWeight: isCompleted ? FontWeight.bold : FontWeight.normal,
             ),

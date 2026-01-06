@@ -10,7 +10,6 @@ class VideoRepository {
     if (response is Map<String, dynamic>) {
        return VideoResponse.fromJson(response);
     }
-    // If it's just a root list (unlikely based on my JSON inspection, but possible)
     throw Exception("Unexpected video response format");
   }
 }

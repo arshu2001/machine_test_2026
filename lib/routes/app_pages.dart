@@ -41,7 +41,7 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.STREAK,
-      page: () => const StreakView(),
+      page: () => const StreakPage(),
       binding: StreakBinding(),
     ),
   ];

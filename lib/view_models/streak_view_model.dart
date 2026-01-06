@@ -4,11 +4,12 @@ import '../../data/repositories/streak_repository.dart';
 
 class StreakViewModel extends GetxController {
   final StreakRepository _repository = StreakRepository();
-  
-  final Rx<StreakResponseModel?> streakData = Rx<StreakResponseModel?>(null);
 
+  final Rx<StreakResponseModel?> streakData = Rx(null);
   final RxBool isLoading = true.obs;
   final RxString errorMessage = ''.obs;
+
+  final Rx<StreakDay?> selectedDay = Rx<StreakDay?>(null);
 
   @override
   void onInit() {
@@ -19,15 +20,19 @@ class StreakViewModel extends GetxController {
   Future<void> fetchStreakData() async {
     try {
       isLoading.value = true;
-      errorMessage.value = '';
-      
       final data = await _repository.getStreakData();
       streakData.value = data;
-      
-    } catch (e) {
-      errorMessage.value = "Failed to load streak: $e";
+
+      /// auto-select current day
+      selectedDay.value =
+          data.days.firstWhereOrNull((e) => e.isCurrent);
     } finally {
       isLoading.value = false;
     }
   }
+
+  void onDayTap(StreakDay day) {
+    selectedDay.value = day;
+  }
 }
+

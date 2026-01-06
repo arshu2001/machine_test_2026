@@ -1,73 +1,103 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:machine_test_2026/widgets/app_color.dart';
-import 'package:machine_test_2026/widgets/streak/streak_path.dart';
+import 'package:machine_test_2026/data/models/streak_model.dart';
+import 'package:machine_test_2026/widgets/streak/day_bubble.dart';
+import 'package:machine_test_2026/widgets/streak/path_painter.dart';
+import 'package:machine_test_2026/widgets/streak/topic_card.dart';
 import '../../view_models/streak_view_model.dart';
-import '../../widgets/custom_text.dart';
 
-class StreakView extends GetView<StreakViewModel> {
-  const StreakView({super.key});
+class StreakPage extends GetView<StreakViewModel> {
+  const StreakPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        title: CustomText(
-          text: "My Streak",
-          fontSize: 20,
-          fontWeight: FontWeight.bold,
-          fontColor: AppColors.kPrimaryColor,
-        ),
-      ),
-      body: SafeArea(
-        child: Obx(() {
-          if (controller.isLoading.value) {
-            return const Center(child: CircularProgressIndicator());
-          }
+      backgroundColor: const Color(0xFFA6F2F8),
+      body: Obx(() {
+        if (controller.isLoading.value) {
+          return const Center(child: CircularProgressIndicator());
+        }
 
-          if (controller.errorMessage.isNotEmpty) {
-            return Center(
-                child: CustomText(text: controller.errorMessage.value));
-          }
+        final days = controller.streakData.value!.days;
 
-          final data = controller.streakData.value;
-          if (data == null) {
-            return const Center(child: CustomText(text: "No Streak Data"));
-          }
-
-          return Padding(
-            padding: const EdgeInsets.all(24.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
+        return SingleChildScrollView(
+          reverse: true, //  bottom → top 
+          child: SizedBox(
+            height: days.length * 130.0 + 200,
+            child: Stack(
               children: [
-                const CustomText(
-                  text: "Current Streak",
-                  fontSize: 18,
-                  fontColor: Colors.grey,
+                /// dotted path
+                CustomPaint(
+                  size: Size(
+                    MediaQuery.of(context).size.width,
+                    days.length * 130.0 + 200,
+                  ),
+                  painter: StreakPathPainter(days.length),
                 ),
-                const SizedBox(height: 10),
-                CustomText(
-                  text: "${data.currentDay}", 
-                  fontSize: 80,
-                  fontWeight: FontWeight.bold,
-                  fontColor: Colors.orange,
-                ),
-                const CustomText(
-                  text: "Days in a row",
-                  fontSize: 18,
-                  fontColor: Colors.grey,
-                ),
-                const SizedBox(height: 40),
-                Expanded(
-                  child: buildStreakPath(data.days),
-                ),
+
+                /// dat bubbles
+                ...List.generate(days.length, (index) {
+                  final day = days[index];
+                  final pos = _dayPosition(index, days.length);
+
+
+                  return Positioned(
+                    left: pos.dx,
+                    top: pos.dy,
+                    child: GestureDetector(
+                      onTap: () => controller.onDayTap(day),
+                      child: DayBubble(day: day),
+                    ),
+                  );
+                }),
+
+                /// tocpic card
+                if (controller.selectedDay.value != null)
+                  _buildTopicPopup(days),
               ],
             ),
-          );
-        }),
-      ),
+          ),
+        );
+      }),
     );
   }
+
+  Widget _buildTopicPopup(List<StreakDay> days) {
+    final day = controller.selectedDay.value!;
+    final index = days.indexOf(day);
+    final pos = _dayPosition(index, days.length);
+
+
+    return Positioned(
+      left: pos.dx + 70,
+      top: pos.dy - 10,
+      child: TopicCard(day: day),
+    );
+  }
+
+  /// zig-zag layout like image
+  Offset _dayPosition(int index, int totalDays) {
+  const double startY = 100;
+  const double gap = 130;
+
+  final int visualIndex = totalDays - 1 - index;
+  final bool isLeft = visualIndex % 2 == 0;
+
+  final double x = isLeft ? 60.0 : 230.0;
+  final double y = startY + visualIndex * gap;
+
+  return Offset(x, y);
 }
+
+}
+
+
+
+
+
+
+
+
+
+
+

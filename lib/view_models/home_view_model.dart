@@ -24,7 +24,7 @@ class HomeViewModel extends GetxController {
       
       final homeDataObj = await _repository.getHomeData();
       homeData.value = homeDataObj;
-      selectedCategoryIndex.value = 0; // Reset selection on new data
+      selectedCategoryIndex.value = 0; // Reset 
       
     } catch (e) {
       print("Home Fetch Error: $e");
@@ -42,7 +42,7 @@ class HomeViewModel extends GetxController {
     if (homeData.value?.categories == null || homeData.value!.categories!.isEmpty) {
       return [];
     }
-    // Safety check just in case index is out of bounds
+    
     if (selectedCategoryIndex.value >= homeData.value!.categories!.length) {
       return [];
     }

@@ -6,8 +6,9 @@ class HomeData {
   final Community? community;
   final List<Testimonial>? testimonials;
   final Support? support;
+  final LiveSession? liveSession;
 
-  HomeData({this.userdata, this.categories, this.heroBanners, this.activeCourse, this.community, this.testimonials, this.support});
+  HomeData({this.userdata, this.categories, this.heroBanners, this.activeCourse, this.community, this.testimonials, this.support, this.liveSession});
 
   factory HomeData.fromJson(Map<String, dynamic> json) {
     return HomeData(
@@ -24,6 +25,7 @@ class HomeData {
           ? (json['testimonials'] as List).map((i) => Testimonial.fromJson(i)).toList() 
           : [],
       support: json['support'] != null ? Support.fromJson(json['support']) : null,
+      liveSession: json['live_session'] != null ? LiveSession.fromJson(json['live_session']) : null,
     );
   }
 }
@@ -107,13 +109,18 @@ class Category {
 class ActiveCourse {
   final String? title;
   final int? progress;
+  final int? testCompleted;
+  final int? totaltest;
+  
 
-  ActiveCourse({this.title, this.progress});
+  ActiveCourse({this.title, this.progress, this.totaltest, this.testCompleted});
 
   factory ActiveCourse.fromJson(Map<String, dynamic> json) {
     return ActiveCourse(
       title: json['title'],
       progress: json['progress'],
+      totaltest: json['total_tests'],
+      testCompleted: json['tests_completed'],
     );
   }
 }
@@ -140,13 +147,15 @@ class Community {
 
 class RecentActivity {
   final String? status;
+  final int? recentPosts;
   final List<RecentMember>? recentMembers;
 
-  RecentActivity({this.status, this.recentMembers});
+  RecentActivity({this.status, this.recentPosts, this.recentMembers});
 
   factory RecentActivity.fromJson(Map<String, dynamic> json) {
     return RecentActivity(
       status: json['status'],
+      recentPosts: json['recent_posts'],
       recentMembers: json['recent_members'] != null 
           ? (json['recent_members'] as List).map((i) => RecentMember.fromJson(i)).toList() 
           : [],
@@ -234,6 +243,56 @@ class SupportAction {
       type: json['type'],
       label: json['label'],
       icon: json['icon'],
+    );
+  }
+}
+
+class LiveSession {
+  final int? id;
+  final bool? isLive;
+  final String? title;
+  final Instructor? instructor;
+  final SessionDetails? sessionDetails;
+  final String? action;
+
+  LiveSession({this.id, this.isLive, this.title, this.instructor, this.sessionDetails, this.action});
+
+  factory LiveSession.fromJson(Map<String, dynamic> json) {
+    return LiveSession(
+      id: json['id'],
+      isLive: json['is_live'],
+      title: json['title'],
+      instructor: json['instructor'] != null ? Instructor.fromJson(json['instructor']) : null,
+      sessionDetails: json['session_details'] != null ? SessionDetails.fromJson(json['session_details']) : null,
+      action: json['action'],
+    );
+  }
+}
+
+class Instructor {
+  final String? name;
+
+  Instructor({this.name});
+
+  factory Instructor.fromJson(Map<String, dynamic> json) {
+    return Instructor(
+      name: json['name'],
+    );
+  }
+}
+
+class SessionDetails {
+  final int? sessionNumber;
+  final String? date;
+  final String? time;
+
+  SessionDetails({this.sessionNumber, this.date, this.time});
+
+  factory SessionDetails.fromJson(Map<String, dynamic> json) {
+    return SessionDetails(
+      sessionNumber: json['session_number'],
+      date: json['date'],
+      time: json['time'],
     );
   }
 }

@@ -15,70 +15,91 @@ Widget buildPopularCourses(List<Course>? courses) {
       );
     }
 
-    return SizedBox(
-      height: 220.h,
-      child: ListView.separated(
-        scrollDirection: Axis.horizontal,
-        itemCount: courses.length,
-        separatorBuilder: (_, __) => SizedBox(width: 16.w),
-        itemBuilder: (context, index) {
-           final course = courses[index];
-           return GestureDetector(
-             onTap: () => Get.toNamed(Routes.VIDEO),
-             child: Container(
-               width: 180.w,
-               decoration: BoxDecoration(
-                 color: Colors.white,
-                 borderRadius: BorderRadius.circular(16.r),
-                 boxShadow: [
-                   BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 10.r),
-                 ],
-               ),
-               child: Column(
-                 crossAxisAlignment: CrossAxisAlignment.start,
-                 children: [
-                    Container(
-                      height: 100.h,
-                      decoration: BoxDecoration(
-                        color: Colors.grey.shade200,
-                        borderRadius: BorderRadius.vertical(top: Radius.circular(16.r)),
-                        image: course.image != null ? DecorationImage(
-                          image: NetworkImage(course.image!),
-                          fit: BoxFit.cover,
-                          onError: (_, __) => {}, // Handle error
-                        ) : null,
-                      ),
-                      child: course.image == null ? const Center(child: Icon(Icons.image)) : null,
+    return GridView.builder(
+      padding: EdgeInsets.zero,
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2,
+        crossAxisSpacing: 16.w,
+        mainAxisSpacing: 16.h,
+        childAspectRatio: 0.8, 
+      ),
+      itemCount: courses.length,
+      itemBuilder: (context, index) {
+         final course = courses[index];
+         return GestureDetector(
+           onTap: () => Get.toNamed(Routes.VIDEO),
+           child: Container(
+             decoration: BoxDecoration(
+               color: Colors.white,
+               borderRadius: BorderRadius.circular(16.r),
+               boxShadow: [
+                 BoxShadow(color: Colors.black.withOpacity(0.08), blurRadius: 12, offset: const Offset(0, 4)),
+               ],
+             ),
+             child: Column(
+               crossAxisAlignment: CrossAxisAlignment.stretch,
+               children: [
+                  // Image Section
+                  Expanded(
+                    flex: 5,
+                    child: Stack(
+                      fit: StackFit.expand,
+                      children: [
+                         ClipRRect(
+                           borderRadius: BorderRadius.vertical(top: Radius.circular(16.r)),
+                           child: course.image != null ? Image.network(
+                             course.image!,
+                             fit: BoxFit.cover,
+                             errorBuilder: (c, o, s) => Container(color: Colors.grey.shade200),
+                           ) : Container(color: Colors.grey.shade200),
+                         ),
+                        
+                      ],
                     ),
-                    Padding(
-                      padding: EdgeInsets.all(12.r),
+                  ),
+                  
+                  // Info & Button
+                  Expanded(
+                    flex: 4,
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 12.h),
                       child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           CustomText(
-                            text: course.title ?? "Unknown",
+                            text: course.title ?? "Title",
                             maxLines: 2,
+                            textAlign: TextAlign.center,
                             overflow: TextOverflow.ellipsis,
                             fontWeight: FontWeight.bold,
-                            fontSize: 16.spMin,
+                            fontSize: 15.spMin,
+                            fontColor: Colors.black87,
                           ),
-                          SizedBox(height: 4.h),
-                          // Text("${course.author} • ${course.rating} ★", style: TextStyle(fontSize: 12, color: Colors.grey[600])), // Fields removed in new model
-                          SizedBox(height: 8.h),
-                           CustomText(
-                            text: "Know more", // Placeholder or from API if avail
-                            fontWeight: FontWeight.bold,
-                            fontColor: Colors.blue,
-                            fontSize: 14.spMin,
-                          ),
+                          Container(
+                            width: double.infinity,
+                            padding: EdgeInsets.symmetric(vertical: 8.h),
+                            decoration: BoxDecoration(
+                              color: const Color(0xFF00B7C2), // Teal color
+                              borderRadius: BorderRadius.circular(8.r),
+                            ),
+                            alignment: Alignment.center,
+                            child: CustomText(
+                              text: "Explore More",
+                              fontColor: Colors.white,
+                              fontSize: 12.spMin,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          )
                         ],
                       ),
                     ),
-                 ],
-               ),
+                  ),
+               ],
              ),
-           );
-        },
-      ),
+           ),
+         );
+      },
     );
   }

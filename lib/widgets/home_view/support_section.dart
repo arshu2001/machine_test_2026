@@ -1,69 +1,133 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:machine_test_2026/data/models/home_model.dart';
 import 'package:machine_test_2026/widgets/custom_text.dart';
 
 Widget buildSupportSection(Support support) {
     return Container(
+      width: double.infinity,
       padding: EdgeInsets.all(20.r),
-      decoration: BoxDecoration(
-        color: const Color(0xFFE8F1FF), // Light blue background
-        borderRadius: BorderRadius.circular(16.r),
-      ),
+      color: const Color(0xFFF9FBFC), // Very light background
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Expanded(
+                flex: 3,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     CustomText(
-                      text: support.title ?? "Have any Questions?",
+                      text: support.title ?? "", 
                       fontSize: 18.spMin,
-                      style: GoogleFonts.poppins(fontWeight: FontWeight.bold),
+                      fontWeight: FontWeight.bold,
+                      fontColor: Colors.black,
                     ),
-                    SizedBox(height: 8.h),
+                    SizedBox(height: 12.h),
                     CustomText(
-                      text: support.description ?? "",
-                      fontSize: 12.spMin,
+                      text: support.description ?? "", 
+                      fontSize: 14.spMin,
                       fontColor: Colors.grey[600],
+                      height: 1.4,
+                    ),
+                     SizedBox(height: 8.h),
+                    CustomText(
+                      text: "“${support.exampleQuestion}”",
+                      fontSize: 14.spMin,
+                       fontColor: Colors.grey[600],
                     ),
                   ],
                 ),
               ),
-              if (support.illustration != null)
-                SizedBox(
-                  width: 60.w,
-                  height: 60.h,
-                  child: Image.network(support.illustration!, errorBuilder: (_,__,___) => const Icon(Icons.support_agent)),
-                )
+              Expanded(
+                flex: 2,
+                child: Container(
+                   height: 120.h,
+                   alignment: Alignment.centerRight,
+                   child: Stack(
+                     alignment: Alignment.bottomCenter,
+                     children: [
+                       Container(
+                         width: 100.w,
+                         height: 100.h,
+                         decoration: const BoxDecoration(
+                           color: Color(0xFFFFE3E2), 
+                           shape: BoxShape.circle,
+                         ),
+                       ),
+                       if (support.illustration != null)
+                        Image.network(
+                          support.illustration!,
+                          height: 110.h,
+                          width: 110.w,
+                          errorBuilder: (_,__,___) => const Icon(Icons.support_agent, size: 50, color: Colors.brown,),
+                        ),
+                     ],
+                   ),
+                ),
+              ),
             ],
           ),
-          SizedBox(height: 16.h),
-           if (support.actions != null && support.actions!.isNotEmpty)
-             Row(
-               children: support.actions!.map((action) {
-                 return Expanded(
-                   child: Container(
-                     margin: EdgeInsets.only(right: 8.w),
-                     child: ElevatedButton.icon(
-                       onPressed: () {}, // Implement action
-                       icon: CustomText(text: action.icon ?? "", fontSize: 18.spMin), 
-                       label: CustomText(text: action.label ?? "Contact", fontSize: 14.spMin),
-                       style: ElevatedButton.styleFrom(
-                         backgroundColor: action.type == "chat" ? Colors.blue : Colors.green,
-                         foregroundColor: Colors.white,
-                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.r)),
-                         padding: EdgeInsets.symmetric(vertical: 10.h),
-                       ),
-                     ),
+          
+          SizedBox(height: 24.h),
+          
+          // Bottom Buttons
+          Row(
+            children: [
+              Expanded(
+                child: Container(
+                   height: 50.h,
+                   decoration: BoxDecoration(
+                     color: Colors.white,
+                     borderRadius: BorderRadius.circular(16.r),
+                     border: Border.all(color: Colors.grey.shade300),
                    ),
-                 );
-               }).toList(),
-             ),
+                   child: Row(
+                     mainAxisAlignment: MainAxisAlignment.center,
+                     children: [
+                       const Icon(Icons.chat_bubble_outline, color: Colors.black),
+                       SizedBox(width: 8.w),
+                       CustomText(
+                         text: support.actions?.isNotEmpty == true
+      ? support.actions!.first.label ?? ''
+      : '',
+                         fontSize: 14.spMin,
+                         fontWeight: FontWeight.bold,
+                         fontColor: Colors.black,
+                       ),
+                     ],
+                   ),
+                ),
+              ),
+              SizedBox(width: 16.w),
+              Expanded(
+                child: Container(
+                   height: 50.h,
+                   decoration: BoxDecoration(
+                     color: Colors.white,
+                     borderRadius: BorderRadius.circular(16.r),
+                      border: Border.all(color: Colors.grey.shade300),
+                   ),
+                   child: Row(
+                     mainAxisAlignment: MainAxisAlignment.center,
+                     children: [
+                       const Icon(Icons.phone_outlined, color: Colors.black),
+                        SizedBox(width: 8.w),
+                       CustomText(
+                         text: support.actions?.length == 2
+      ? support.actions![1].label ?? '': '',
+                         fontSize: 14.spMin,
+                         fontWeight: FontWeight.bold,
+                         fontColor: Colors.black,
+                       ),
+                     ],
+                   ),
+                ),
+              ),
+            ],
+          )
         ],
       ),
     );

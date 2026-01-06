@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 
 class AppColors {
   static Color kWhite = const Color(0xFFFFFFFF);
+  static Color ktheme = const Color(0xFF00ABBC);
+  static Color ksec = const Color(0xFFFDB918);
   static Color kPrimaryColor = const Color(0xFF242424);
   static Color kSecondaryColor = const Color(0xFF504747);
   static Color kblueColor = const Color(0xFF1F3E78);
