@@ -21,7 +21,7 @@ Widget buildCommunitySection(Community community) {
                CircleAvatar(
                  radius: 24.r,
                  backgroundColor: const Color(0xFF00B7C2), // Teal color
-                 child: const Icon(Icons.groups, color: Colors.white, size: 28),
+                 child: Image.asset("assets/images/icon/community.png", height: 15.h,),
                ),
               SizedBox(width: 12.w),
               Expanded(

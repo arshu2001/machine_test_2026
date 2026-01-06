@@ -87,7 +87,7 @@ Widget buildSupportSection(Support support) {
                    child: Row(
                      mainAxisAlignment: MainAxisAlignment.center,
                      children: [
-                       const Icon(Icons.chat_bubble_outline, color: Colors.black),
+                       Image.asset("assets/images/icon/chat.png",height: 18.h,),
                        SizedBox(width: 8.w),
                        CustomText(
                          text: support.actions?.isNotEmpty == true
@@ -113,7 +113,7 @@ Widget buildSupportSection(Support support) {
                    child: Row(
                      mainAxisAlignment: MainAxisAlignment.center,
                      children: [
-                       const Icon(Icons.phone_outlined, color: Colors.black),
+                        Image.asset("assets/images/icon/call.png",height: 18.h,),
                         SizedBox(width: 8.w),
                        CustomText(
                          text: support.actions?.length == 2

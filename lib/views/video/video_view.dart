@@ -89,7 +89,7 @@ class VideoView extends GetView<VideoViewModel> {
                                      BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 4),
                                   ]
                                 ),
-                                child: const Icon(Icons.download, color: Colors.grey),
+                                child: Image.asset("assets/images/icon/download.png",height: 20.h,),
                               ),
                             ],
                           ),
